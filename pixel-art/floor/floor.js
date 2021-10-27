@@ -1,7 +1,7 @@
 // ------- Define stuff
 let width = 32;
 let height = 32;
-const nbPlanks = 8;
+let nbPlanks = 8;
 
 // preview
 const previewScale = 5;
@@ -249,9 +249,13 @@ function Clear() {
 //#endregion
 
 //#region Get options values from the HTML
-function GetCanvasSizes() {
+function GetCanvasAttributes() {
     width = parseInt(document.getElementById("canvas-width").value);
     height = parseInt(document.getElementById("canvas-height").value);
+}
+
+function GetPlankAttributes() {
+    nbPlanks = parseInt(document.getElementById("nb-planks").value);
 }
 
 function GlobalVariablesUpdate() {
@@ -270,7 +274,8 @@ function GlobalVariablesUpdate() {
 }
 
 function UpdateOptions() {
-    GetCanvasSizes();
+    GetCanvasAttributes();
+    GetPlankAttributes();
     GlobalVariablesUpdate();
 }
 //#endregion

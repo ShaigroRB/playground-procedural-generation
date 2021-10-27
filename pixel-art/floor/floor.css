@@ -21,6 +21,11 @@ h3 {
     width: 100%;
 }
 
+.info {
+    color: #f96b8f;
+    font-style: italic;
+}
+
 .vert-separator {
     border-left: 1px solid #73532E;
     margin: 0px 5px;
