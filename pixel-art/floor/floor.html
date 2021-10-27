@@ -24,7 +24,15 @@
             <!-- Generate seed -->
             <div>
                 <input id="input-seed" value="test" />
-                <button onclick="Clear(); Generate(MakeID(10))">Generate</button>
+                <button onclick="GenerateFloor()">Generate</button>
+            </div>
+            <!-- Size of the canvas -->
+            <div>
+                <h3>--- Canvas ---</h3>
+                <label for="input-canvas-width">Width</label> <input type="number" name="input-canvas-width"
+                    id="canvas-width" value="32" />
+                <label for="input-canvas-height">Height</label> <input type="number" name="input-canvas-height"
+                    id="canvas-height" value="32" />
             </div>
         </div>
 

@@ -1,12 +1,12 @@
 // ------- Define stuff
-const width = 32;
-const height = 32;
+let width = 32;
+let height = 32;
 const nbPlanks = 8;
 
 // preview
 const previewScale = 5;
 
-const distanceBetweenPlanks = height / nbPlanks;
+let distanceBetweenPlanks = height / nbPlanks;
 const defaultPlankColor = "#96704A";
 const darkerPlankColor = "#916B44";
 const delimPlankColor = "#815D34";
@@ -28,6 +28,7 @@ function MakeID(length) {
     return result;
 }
 
+//#region Draw figures on canvas
 /**
  * Draw horizontal delimitations for planks
  * @param {HTMLCanvasElement} canvas 
@@ -209,7 +210,9 @@ function DrawPlanks(height, width, distanceBetweenPlanks, nextNumber, drawPlank,
         indexHeight += distanceBetweenPlanks;
     }
 }
+//#endregion
 
+//#region Generate the floor texture using a seed
 function Generate(seed) {
     document.getElementById("input-seed").value = seed;
     const genRnd = new Math.seedrandom(seed);
@@ -243,8 +246,37 @@ function Clear() {
     stage.destroyChildren();
     stage.clear();
 }
+//#endregion
 
-// -------------- Generate things here
+//#region Get options values from the HTML
+function GetCanvasSizes() {
+    width = parseInt(document.getElementById("canvas-width").value);
+    height = parseInt(document.getElementById("canvas-height").value);
+}
+
+function GlobalVariablesUpdate() {
+    distanceBetweenPlanks = height / nbPlanks;
+
+    stage = new Konva.Stage({
+        container: 'floor-generation',
+        width: width,
+        height: height
+    });
+    previewStage = new Konva.Stage({
+        container: 'floor-preview',
+        width: width * previewScale,
+        height: height * previewScale
+    });
+    console.log({...stage})
+}
+
+function UpdateOptions() {
+    GetCanvasSizes();
+    GlobalVariablesUpdate();
+}
+//#endregion
+
+//#region First generation, set things for Konva.js & global functions to generate
 let stage = new Konva.Stage({
     container: 'floor-generation',
     width: width,
@@ -257,4 +289,14 @@ let previewStage = new Konva.Stage({
     height: height * previewScale
 });
 
+function GenerateFloor() {
+    UpdateOptions();
+
+    Clear();
+    Generate(MakeID(10));
+}
+
+// Very first generation
 Generate(MakeID(10));
+
+//#endregion
