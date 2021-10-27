@@ -1,0 +1,46 @@
+html, body {
+    height: 93%;
+}
+
+body {
+    background-color: antiquewhite;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+#floor-generation {
+    height: 128px;
+    width: 256px;
+    margin: 15px;
+}
+
+.options {
+    width: 100%;
+}
+
+.vert-separator {
+    border-left: 1px solid #73532E;
+    margin: 0px 5px;
+}
+
+.horiz-separator {
+    border-bottom: 1px solid #73532E;
+    margin: 5px 0px;
+}
+
+.border {
+    border: 1px solid #73532E;
+}
+
+.container {
+    display: flex;
+    height: 100%;
+    width: 100%;
+}
+
+.container.row {
+    flex-direction: row;
+}
+
+.container.column {
+    flex-direction: column;
+}

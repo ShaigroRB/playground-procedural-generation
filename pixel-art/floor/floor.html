@@ -10,33 +10,40 @@
     <!-- wrapper on canvas API because I'm feeling lazy to relearn how to use it -->
     <script src="https://unpkg.com/konva@8/konva.min.js"></script>
     <title>Floor texture generator</title>
-    <style>
-        #floor-generation {
-            height: 128px;
-            width: 256px;
-            margin: 15px;
-        }
-
-        body {
-            background-color: antiquewhite;
-            font-family: Arial, Helvetica, sans-serif;
-        }
-
-        .flex {
-            display: flex;
-        }
-    </style>
+    <link rel="stylesheet" href="./floor.css" />
 </head>
 
 <body>
     <h1>Floor texture generator </h1>
-    <input id="input-seed" value="test" />
-    <button onclick="Clear(); Generate(MakeID(10))">Generate</button>
     <br />
 
-    <div class="flex">
-        <div id="floor-generation"></div>
-        <div id="floor-preview"></div>
+    <div class="container row">
+        <div class="options">
+            <h2>Options</h2>
+
+            <!-- Generate seed -->
+            <div>
+                <input id="input-seed" value="test" />
+                <button onclick="Clear(); Generate(MakeID(10))">Generate</button>
+            </div>
+        </div>
+
+        <div class="vert-separator"></div>
+
+        <div class="container column left-border">
+
+            <div id="variations">
+                <h2>Variations</h2>
+                <div id="floor-generation"></div>
+            </div>
+
+            <div class="horiz-separator"></div>
+
+            <div id="preview">
+                <h2>Preview</h2>
+                <div id="floor-preview"></div>
+            </div>
+        </div>
     </div>
 
     <script src="./floor.js">
