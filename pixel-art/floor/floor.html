@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- Given a seed, always return a deterministic series of number -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
+    <!-- wrapper on canvas API because I'm feeling lazy to relearn how to use it -->
+    <script src="https://unpkg.com/konva@8/konva.min.js"></script>
+    <title>Floor texture generator</title>
+    <style>
+        #floor-generation {
+            height: 128px;
+            width: 256px;
+            margin: 15px;
+        }
+
+        body {
+            background-color: antiquewhite;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .flex {
+            display: flex;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Floor texture generator </h1>
+    <input id="input-seed" value="test" />
+    <button onclick="Clear(); Generate(MakeID(10))">Generate</button>
+    <br />
+
+    <div class="flex">
+        <div id="floor-generation"></div>
+        <div id="floor-preview"></div>
+    </div>
+
+    <script src="./floor.js">
+    </script>
+</body>
+
+</html>
