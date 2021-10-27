@@ -267,7 +267,6 @@ function GlobalVariablesUpdate() {
         width: width * previewScale,
         height: height * previewScale
     });
-    console.log({...stage})
 }
 
 function UpdateOptions() {
@@ -289,11 +288,16 @@ let previewStage = new Konva.Stage({
     height: height * previewScale
 });
 
-function GenerateFloor() {
+function GenerateFloor(seed = MakeID(10)) {
     UpdateOptions();
 
     Clear();
-    Generate(MakeID(10));
+    Generate(seed);
+}
+
+function GenerateSameFloorNewOptions() {
+    const seed = document.getElementById("input-seed").value;
+    GenerateFloor(seed);
 }
 
 // Very first generation
