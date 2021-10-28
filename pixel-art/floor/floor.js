@@ -7,10 +7,10 @@ let nbPlanks = 8;
 const previewScale = 5;
 
 let distanceBetweenPlanks = height / nbPlanks;
-const defaultPlankColor = "#96704A";
-const darkerPlankColor = "#916B44";
-const delimPlankColor = "#815D34";
-const intersectionColor = "#73532E";
+let defaultPlankColor = "#96704A";
+let darkerPlankColor = "#916B44";
+let delimPlankColor = "#815D34";
+let intersectionColor = "#73532E";
 
 /**
  * Make a random id
@@ -258,6 +258,13 @@ function GetPlankAttributes() {
     nbPlanks = parseInt(document.getElementById("nb-planks").value);
 }
 
+function GetColors() {
+    defaultPlankColor = document.getElementById("light-plank-color").value;
+    darkerPlankColor = document.getElementById("dark-plank-color").value;
+    delimPlankColor = document.getElementById("delimitation-color").value;
+    intersectionColor = document.getElementById("intersection-color").value;
+}
+
 function GlobalVariablesUpdate() {
     distanceBetweenPlanks = height / nbPlanks;
 
@@ -276,6 +283,7 @@ function GlobalVariablesUpdate() {
 function UpdateOptions() {
     GetCanvasAttributes();
     GetPlankAttributes();
+    GetColors();
     GlobalVariablesUpdate();
 }
 //#endregion
