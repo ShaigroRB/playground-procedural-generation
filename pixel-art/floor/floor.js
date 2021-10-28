@@ -3,7 +3,7 @@ let width = 32;
 let height = 32;
 let nbPlanks = 8;
 
-let areColorsGenerated = false;
+let areColorsGenerated = true;
 
 // preview
 const previewScale = 5;
@@ -217,7 +217,6 @@ function DrawPlanks(height, width, distanceBetweenPlanks, nextNumber, drawPlank,
 
 //#region Generate the floor texture using a seed
 function Generate(seed) {
-    document.getElementById("input-seed").value = seed;
     const genRnd = new Math.seedrandom(seed);
 
     let layer = new Konva.Layer();
@@ -293,7 +292,7 @@ function GetColors() {
         defaultPlankColor = defaultBaseSchemeColor;
         darkerPlankColor = shadeColor(defaultPlankColor, -5);
         delimPlankColor = shadeColor(darkerPlankColor, -10);
-        intersectionColor = shadeColor(delimPlankColor, -5);
+        intersectionColor = shadeColor(delimPlankColor, -7);
 
         return;
     }
@@ -362,6 +361,8 @@ function GenerateFloor(seed = MakeID(10)) {
 
     Clear();
     Generate(seed);
+
+    document.getElementById("input-seed").value = seed;
 }
 
 function GenerateSameFloorNewOptions() {
@@ -370,6 +371,6 @@ function GenerateSameFloorNewOptions() {
 }
 
 // Very first generation
-Generate(MakeID(10));
+GenerateFloor();
 
 //#endregion
