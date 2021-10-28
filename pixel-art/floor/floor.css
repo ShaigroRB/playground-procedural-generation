@@ -17,8 +17,12 @@ h3 {
     margin: 15px;
 }
 
-.options {
+.w-100 {
     width: 100%;
+}
+
+.w-50 {
+    width: 50%;
 }
 
 .info {

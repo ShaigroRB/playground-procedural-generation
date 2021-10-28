@@ -6,9 +6,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Given a seed, always return a deterministic series of number -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/seedrandom/3.0.5/seedrandom.min.js"></script>
+    <script src="libs/seedrandom.js"></script>
     <!-- wrapper on canvas API because I'm feeling lazy to relearn how to use it -->
-    <script src="https://unpkg.com/konva@8/konva.min.js"></script>
+    <script src="libs/konva.js"></script>
     <title>Floor texture generator</title>
     <link rel="stylesheet" href="./floor.css" />
 </head>
@@ -18,7 +18,7 @@
     <br />
 
     <div class="container row">
-        <div class="options">
+        <div class="w-100">
             <h2>Options</h2>
 
             <!-- Generate seed -->
@@ -31,9 +31,9 @@
             <!-- Size of the canvas -->
             <div>
                 <h3>--- Canvas ---</h3>
-                <label for="input-canvas-width">Width</label> <input type="number" name="input-canvas-width"
-                    id="canvas-width" value="32" />
-                <label for="input-canvas-height">Height</label> <input type="number" name="input-canvas-height"
+                <label for="canvas-width">Width</label> <input type="number" name="input-canvas-width" id="canvas-width"
+                    value="32" />
+                <label for="canvas-height">Height</label> <input type="number" name="input-canvas-height"
                     id="canvas-height" value="32" />
             </div>
 
@@ -41,7 +41,7 @@
             <div>
                 <h3>--- Planks ---</h3>
                 <div>
-                    <label for="input-nb-planks">Number of planks</label> <input type="number" name="input-nb-planks"
+                    <label for="nb-planks">Number of planks</label> <input type="number" name="input-nb-planks"
                         id="nb-planks" value="8" />
                     <span class="info">Tip for neat results: <b>height/nbPlanks == 0</b>.</span>
                 </div>
@@ -50,17 +50,42 @@
             <!-- Color options -->
             <div>
                 <h3>--- Colors ---</h3>
-                <div>
-                    <label for="input-light-plank-color">Light planks</label> <input type="color" id="light-plank-color"
-                        name="input-light-plank-color" value="#96704A">
-                    <label for="input-dark-plank-color">Dark planks</label> <input type="color" id="dark-plank-color"
-                        name="input-dark-plank-color" value="#916B44">
-                </div>
-                <div>
-                    <label for="input-delimitation-color">Plank delimitations</label> <input type="color" id="delimitation-color"
-                        name="input-delimitation-color" value="#815D34">
-                    <label for="input-intersection-color">Intersections</label> <input type="color" id="intersection-color"
-                        name="input-intersection-color" value="#73532E">
+                <div class="container row">
+                    <div class="w-50">
+                        <h4>How are colors defined?</h4>
+                        <div>
+                            <input type="radio" id="manual-definition" name="colors-definition" value="manuallly" checked>
+                            <label for="manual-definition">Manually</label>
+                        </div>
+
+                        <div>
+                            <input type="radio" id="automatic-definition" name="colors-definition" value="automatically">
+                            <label for="automatic-definition">Automatically</label>
+                        </div>
+                    </div>
+
+                    <div class="vert-separator"></div>
+
+                    <div>
+                        <div id="color-scheme" hidden>
+                            <label for="base-scheme-color">Color used for the palette</label> <input type="color"
+                                id="base-scheme-color" name="input-base-scheme-color" value="#96704A">
+                        </div>
+                        <div id="colors-details">
+                            <div>
+                                <label for="light-plank-color">Light planks</label> <input type="color"
+                                    id="light-plank-color" name="input-light-plank-color" value="#96704A">
+                                <label for="dark-plank-color">Dark planks</label> <input type="color"
+                                    id="dark-plank-color" name="input-dark-plank-color" value="#916B44">
+                            </div>
+                            <div>
+                                <label for="delimitation-color">Plank delimitations</label> <input type="color"
+                                    id="delimitation-color" name="input-delimitation-color" value="#815D34">
+                                <label for="intersection-color">Intersections</label> <input type="color"
+                                    id="intersection-color" name="input-intersection-color" value="#73532E">
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
