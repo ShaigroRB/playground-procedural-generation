@@ -17,6 +17,10 @@ let delimPlankColor = "#815D34";
 let intersectionColor = "#73532E";
 let defaultBaseSchemeColor = "#96704A";
 
+// variations
+let nbVariations = 1;
+let variationsStages = [];
+
 /**
  * Make a random id
  * @param {number} length 
@@ -281,6 +285,12 @@ function Generate(seed) {
     let tmpGroup = drawDelimAndIntersections(stage);
     groups.push(tmpGroup);
 
+    // Variations
+    for (let variationStage of variationsStages) {
+        tmpGroup = drawDelimAndIntersections(variationStage);
+        groups.push(tmpGroup);
+    }
+    
     GeneratePreview(width, height, groups, previewStage, previewScale);
 }
 
@@ -344,6 +354,36 @@ function GetColors() {
     intersectionColor = document.getElementById("intersection-color").value;
 }
 
+const variationsDiv = document.getElementById("floor-variations");
+
+function setVariationsStages() {
+    // Clear the previous variations
+    variationsStages = [];
+    variationsDiv.textContent = '';
+
+
+    for (let i = 0; i < nbVariations; i++) {
+        // Create div for the current variation
+        const id = `floor-variation-${i}`;
+        const div = document.createElement("div");
+        div.id = id;
+        div.className = "mg-1";
+
+        // Add the div to the HTML
+        variationsDiv.appendChild(div);
+
+        // Create a stage with the corresponding div
+        const variationStage = new Konva.Stage({
+            container: id,
+            width: width,
+            height: height
+        })
+
+        // Add the variation to the list of variations
+        variationsStages.push(variationStage);
+    }
+}
+
 function GlobalVariablesUpdate() {
     distanceBetweenPlanks = height / nbPlanks;
 
@@ -357,6 +397,8 @@ function GlobalVariablesUpdate() {
         width: width * previewScale,
         height: height * previewScale
     });
+
+    setVariationsStages();
 }
 
 function UpdateOptions() {
