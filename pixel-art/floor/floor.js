@@ -18,6 +18,8 @@ let intersectionColor = "#73532E";
 let defaultBaseSchemeColor = "#96704A";
 
 // variations
+const NB_VARIATIONS_MAX = 10;
+
 let nbVariations = 1;
 let variationsStages = [];
 
@@ -310,6 +312,11 @@ function GetPlankAttributes() {
     nbPlanks = parseInt(document.getElementById("nb-planks").value);
 }
 
+function GetVariationsAttributes() {
+    nbVariations = parseInt(document.getElementById("nb-variations").value);
+    nbVariations = nbVariations > NB_VARIATIONS_MAX ? NB_VARIATIONS_MAX : nbVariations;
+}
+
 /**
  * https://stackoverflow.com/a/13532993
 */
@@ -404,6 +411,7 @@ function GlobalVariablesUpdate() {
 function UpdateOptions() {
     GetCanvasAttributes();
     GetPlankAttributes();
+    GetVariationsAttributes();
     GetColors();
     GlobalVariablesUpdate();
 }
