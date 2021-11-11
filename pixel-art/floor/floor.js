@@ -9,6 +9,8 @@ let areColorsGenerated = true;
 const previewScale = 5;
 
 let distanceBetweenPlanks = height / nbPlanks;
+
+// colors
 let defaultPlankColor = "#96704A";
 let darkerPlankColor = "#916B44";
 let delimPlankColor = "#815D34";
@@ -117,14 +119,17 @@ function DrawKonvaRect(group, color) {
     }
 }
 
-function GeneratePreview(stageWidth, stageHeight, group, previewStage, scale) {
+function GeneratePreview(stageWidth, stageHeight, groups, previewStage, scale) {
     previewStage.destroyChildren();
     previewStage.clear();
+
+    const getRandomGroup = () => groups[Math.floor(Math.random() * groups.length)];
 
     let layer = new Konva.Layer();
 
     for (let x = 0; x < stageWidth * scale; x += stageWidth) {
         for (let y = 0; y < stageHeight * scale; y += stageHeight) {
+            const group = getRandomGroup();
             const newGroup = group.clone({
                 x: x,
                 y: y
@@ -216,16 +221,34 @@ function DrawPlanks(height, width, distanceBetweenPlanks, nextNumber, drawPlank,
 //#endregion
 
 //#region Generate the floor texture using a seed
+// Stack all groups into one group
+function stackGroups(groups) {
+    const group = new Konva.Group();
+    for (let i = 0; i < groups.length; i++) {
+        // Clone each group to avoid future changes to them later on.
+        const clone = groups[i].clone();
+        group.add(clone);
+    }
+    return group;
+}
+
+function drawGroupOntoStage(group, stage) {
+    let layer = new Konva.Layer();
+    layer.add(group);
+    stage.add(layer);
+}
+
 function Generate(seed) {
     const genRnd = new Math.seedrandom(seed);
 
-    let layer = new Konva.Layer();
-    let group = new Konva.Group();
+    let plankGroup = new Konva.Group();
+    let delimGroup = new Konva.Group();
+    let intersectGroup = new Konva.Group();
 
-    const drawKonvaRectLightPlankColor = DrawKonvaRect(group, defaultPlankColor);
-    const drawKonvaRectDarkPlankColor = DrawKonvaRect(group, darkerPlankColor);
-    const drawKonvaLine = DrawKonvaLine(group, delimPlankColor);
-    const drawKonvaLetterT = DrawKonvaLetterT(group, intersectionColor);
+    const drawKonvaRectLightPlankColor = DrawKonvaRect(plankGroup, defaultPlankColor);
+    const drawKonvaRectDarkPlankColor = DrawKonvaRect(plankGroup, darkerPlankColor);
+    const drawKonvaLine = DrawKonvaLine(delimGroup, delimPlankColor);
+    const drawKonvaLetterT = DrawKonvaLetterT(intersectGroup, intersectionColor);
 
     DrawPlanks(
         height, width,
@@ -233,15 +256,32 @@ function Generate(seed) {
         drawKonvaRectLightPlankColor, drawKonvaRectDarkPlankColor
     );
 
-    DrawHorizDelim(height, width, distanceBetweenPlanks, drawKonvaLine);
-    const intersections = DrawVertDelim(height, width, distanceBetweenPlanks, genRnd, drawKonvaLine);
-    DrawIntersections(intersections, genRnd, drawKonvaLetterT);
+    const drawDelimAndIntersections = (stage) => {
+        // Create delimitations between planks
+        DrawHorizDelim(height, width, distanceBetweenPlanks, drawKonvaLine);
+        const intersections = DrawVertDelim(height, width, distanceBetweenPlanks, genRnd, drawKonvaLine);
 
-    layer.add(group);
-    stage.add(layer);
-    layer.draw();
+        // Create intersections
+        DrawIntersections(intersections, genRnd, drawKonvaLetterT);
+    
+        // Draw all groups onto the stage
+        const group = stackGroups([plankGroup, delimGroup, intersectGroup]);
+        drawGroupOntoStage(group, stage);
 
-    GeneratePreview(width, height, group, previewStage, previewScale);
+        // Clear delimitations & intersections groups for future use
+        delimGroup.destroyChildren();
+        intersectGroup.destroyChildren();
+
+        return group;
+    }
+
+    let groups = [];
+
+    // First result
+    let tmpGroup = drawDelimAndIntersections(stage);
+    groups.push(tmpGroup);
+
+    GeneratePreview(width, height, groups, previewStage, previewScale);
 }
 
 function Clear() {
@@ -262,33 +302,33 @@ function GetPlankAttributes() {
 
 /**
  * https://stackoverflow.com/a/13532993
-*/ 
+*/
 function shadeColor(color, percent) {
 
-    var R = parseInt(color.substring(1,3),16);
-    var G = parseInt(color.substring(3,5),16);
-    var B = parseInt(color.substring(5,7),16);
+    var R = parseInt(color.substring(1, 3), 16);
+    var G = parseInt(color.substring(3, 5), 16);
+    var B = parseInt(color.substring(5, 7), 16);
 
     R = parseInt(R * (100 + percent) / 100);
     G = parseInt(G * (100 + percent) / 100);
     B = parseInt(B * (100 + percent) / 100);
 
-    R = (R<255)?R:255;  
-    G = (G<255)?G:255;  
-    B = (B<255)?B:255;  
+    R = (R < 255) ? R : 255;
+    G = (G < 255) ? G : 255;
+    B = (B < 255) ? B : 255;
 
-    var RR = ((R.toString(16).length==1)?"0"+R.toString(16):R.toString(16));
-    var GG = ((G.toString(16).length==1)?"0"+G.toString(16):G.toString(16));
-    var BB = ((B.toString(16).length==1)?"0"+B.toString(16):B.toString(16));
+    var RR = ((R.toString(16).length == 1) ? "0" + R.toString(16) : R.toString(16));
+    var GG = ((G.toString(16).length == 1) ? "0" + G.toString(16) : G.toString(16));
+    var BB = ((B.toString(16).length == 1) ? "0" + B.toString(16) : B.toString(16));
 
-    return "#"+RR+GG+BB;
+    return "#" + RR + GG + BB;
 }
 
 function GetColors() {
 
     if (areColorsGenerated) {
         defaultBaseSchemeColor = document.getElementById("base-scheme-color").value;
-        
+
         defaultPlankColor = defaultBaseSchemeColor;
         darkerPlankColor = shadeColor(defaultPlankColor, -5);
         delimPlankColor = shadeColor(darkerPlankColor, -10);

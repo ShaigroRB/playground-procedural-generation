@@ -12,9 +12,11 @@ h3 {
 }
 
 #floor-generation {
-    height: 128px;
-    width: 256px;
     margin: 15px;
+}
+
+.mg-1 {
+    margin: 1px;
 }
 
 .w-100 {
