@@ -23,6 +23,8 @@ const NB_VARIATIONS_MAX = 10;
 let nbVariations = 1;
 let variationsStages = [];
 
+//#region Utility functions
+
 /**
  * Make a random id
  * @param {number} length 
@@ -39,7 +41,94 @@ function MakeID(length) {
     return result;
 }
 
+/// Konva.js utility functions
+// Stack a list of Konva groups into one Konva group
+function StackGroups(groups) {
+    const group = new Konva.Group();
+    for (let i = 0; i < groups.length; i++) {
+        // Clone each group to avoid future changes to them later on.
+        const clone = groups[i].clone();
+        group.add(clone);
+    }
+    return group;
+}
+
+// Draw a Konva group onto a Konva stage
+function DrawGroupOntoStage(group, stage) {
+    let layer = new Konva.Layer();
+    layer.add(group);
+    stage.add(layer);
+}
+
+// Clear a Konva stage
+function Clear(stage) {
+    stage.destroyChildren();
+    stage.clear();
+}
+
+/**
+ * https://stackoverflow.com/a/13532993
+*/
+// Lighten/darken the color
+function shadeColor(color, percent) {
+
+    var R = parseInt(color.substring(1, 3), 16);
+    var G = parseInt(color.substring(3, 5), 16);
+    var B = parseInt(color.substring(5, 7), 16);
+
+    R = parseInt(R * (100 + percent) / 100);
+    G = parseInt(G * (100 + percent) / 100);
+    B = parseInt(B * (100 + percent) / 100);
+
+    R = (R < 255) ? R : 255;
+    G = (G < 255) ? G : 255;
+    B = (B < 255) ? B : 255;
+
+    var RR = ((R.toString(16).length == 1) ? "0" + R.toString(16) : R.toString(16));
+    var GG = ((G.toString(16).length == 1) ? "0" + G.toString(16) : G.toString(16));
+    var BB = ((B.toString(16).length == 1) ? "0" + B.toString(16) : B.toString(16));
+
+    return "#" + RR + GG + BB;
+}
+
+//#endregion
+
 //#region Draw figures on canvas
+function DrawKonvaLine(group, color) {
+    return function (start, end) {
+        const line = new Konva.Line({
+            points: [start.x, start.y, end.x, end.y],
+            stroke: color,
+            strokeWidth: 1
+        });
+
+        group.add(line);
+    }
+}
+
+function DrawKonvaRect(group, color) {
+    return function (x, y, height, width) {
+        const rect = new Konva.Rect({
+            x: x, y: y,
+            width: width, height: height,
+            fill: color
+        });
+
+        group.add(rect);
+    }
+}
+
+function DrawKonvaLetterT(group, color) {
+    const drawLine = DrawKonvaLine(group, color);
+
+    return function (leftPoint, rightPoint, centerPoint, bottomPoint) {
+        drawLine(leftPoint, rightPoint);
+        drawLine(centerPoint, bottomPoint);
+    }
+}
+//#endregion
+
+//#region Draw elements of floor texture (planks, delimitations, intersections)
 /**
  * Draw horizontal delimitations for planks
  * @param {HTMLCanvasElement} canvas 
@@ -99,61 +188,6 @@ function DrawVertDelim(height, width, distance, nextNumber, drawLine) {
     }
 
     return intersections;
-}
-
-function DrawKonvaLine(group, color) {
-    return function (start, end) {
-        const line = new Konva.Line({
-            points: [start.x, start.y, end.x, end.y],
-            stroke: color,
-            strokeWidth: 1
-        });
-
-        group.add(line);
-    }
-}
-
-function DrawKonvaRect(group, color) {
-    return function (x, y, height, width) {
-        const rect = new Konva.Rect({
-            x: x, y: y,
-            width: width, height: height,
-            fill: color
-        });
-
-        group.add(rect);
-    }
-}
-
-function GeneratePreview(stageWidth, stageHeight, groups, previewStage, scale) {
-    previewStage.destroyChildren();
-    previewStage.clear();
-
-    const getRandomGroup = () => groups[Math.floor(Math.random() * groups.length)];
-
-    let layer = new Konva.Layer();
-
-    for (let x = 0; x < stageWidth * scale; x += stageWidth) {
-        for (let y = 0; y < stageHeight * scale; y += stageHeight) {
-            const group = getRandomGroup();
-            const newGroup = group.clone({
-                x: x,
-                y: y
-            });
-            layer.add(newGroup);
-        }
-    }
-
-    previewStage.add(layer);
-}
-
-function DrawKonvaLetterT(group, color) {
-    const drawLine = DrawKonvaLine(group, color);
-
-    return function (leftPoint, rightPoint, centerPoint, bottomPoint) {
-        drawLine(leftPoint, rightPoint);
-        drawLine(centerPoint, bottomPoint);
-    }
 }
 
 function CreatePoint(x, y) {
@@ -226,22 +260,25 @@ function DrawPlanks(height, width, distanceBetweenPlanks, nextNumber, drawPlank,
 }
 //#endregion
 
-//#region Generate the floor texture using a seed
-// Stack all groups into one group
-function stackGroups(groups) {
-    const group = new Konva.Group();
-    for (let i = 0; i < groups.length; i++) {
-        // Clone each group to avoid future changes to them later on.
-        const clone = groups[i].clone();
-        group.add(clone);
-    }
-    return group;
-}
+//#region Generation functions
+function GeneratePreview(stageWidth, stageHeight, groups, previewStage, scale) {
+    const getRandomGroup = () => groups[Math.floor(Math.random() * groups.length)];
 
-function drawGroupOntoStage(group, stage) {
     let layer = new Konva.Layer();
-    layer.add(group);
-    stage.add(layer);
+
+    // Join random groups together to create the preview
+    for (let x = 0; x < stageWidth * scale; x += stageWidth) {
+        for (let y = 0; y < stageHeight * scale; y += stageHeight) {
+            const group = getRandomGroup();
+            const newGroup = group.clone({
+                x: x,
+                y: y
+            });
+            layer.add(newGroup);
+        }
+    }
+
+    previewStage.add(layer);
 }
 
 function Generate(seed) {
@@ -271,8 +308,8 @@ function Generate(seed) {
         DrawIntersections(intersections, genRnd, drawKonvaLetterT);
     
         // Draw all groups onto the stage
-        const group = stackGroups([plankGroup, delimGroup, intersectGroup]);
-        drawGroupOntoStage(group, stage);
+        const group = StackGroups([plankGroup, delimGroup, intersectGroup]);
+        DrawGroupOntoStage(group, stage);
 
         // Clear delimitations & intersections groups for future use
         delimGroup.destroyChildren();
@@ -293,12 +330,8 @@ function Generate(seed) {
         groups.push(tmpGroup);
     }
     
+    Clear(previewStage);
     GeneratePreview(width, height, groups, previewStage, previewScale);
-}
-
-function Clear() {
-    stage.destroyChildren();
-    stage.clear();
 }
 //#endregion
 
@@ -315,30 +348,6 @@ function GetPlankAttributes() {
 function GetVariationsAttributes() {
     nbVariations = parseInt(document.getElementById("nb-variations").value);
     nbVariations = nbVariations > NB_VARIATIONS_MAX ? NB_VARIATIONS_MAX : nbVariations;
-}
-
-/**
- * https://stackoverflow.com/a/13532993
-*/
-function shadeColor(color, percent) {
-
-    var R = parseInt(color.substring(1, 3), 16);
-    var G = parseInt(color.substring(3, 5), 16);
-    var B = parseInt(color.substring(5, 7), 16);
-
-    R = parseInt(R * (100 + percent) / 100);
-    G = parseInt(G * (100 + percent) / 100);
-    B = parseInt(B * (100 + percent) / 100);
-
-    R = (R < 255) ? R : 255;
-    G = (G < 255) ? G : 255;
-    B = (B < 255) ? B : 255;
-
-    var RR = ((R.toString(16).length == 1) ? "0" + R.toString(16) : R.toString(16));
-    var GG = ((G.toString(16).length == 1) ? "0" + G.toString(16) : G.toString(16));
-    var BB = ((B.toString(16).length == 1) ? "0" + B.toString(16) : B.toString(16));
-
-    return "#" + RR + GG + BB;
 }
 
 function GetColors() {
@@ -449,7 +458,7 @@ let previewStage = new Konva.Stage({
 function GenerateFloor(seed = MakeID(10)) {
     UpdateOptions();
 
-    Clear();
+    Clear(stage);
     Generate(seed);
 
     document.getElementById("input-seed").value = seed;
