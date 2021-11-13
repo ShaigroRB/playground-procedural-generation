@@ -9,12 +9,12 @@
     <script src="libs/seedrandom.js"></script>
     <!-- wrapper on canvas API because I'm feeling lazy to relearn how to use it -->
     <script src="libs/konva.js"></script>
-    <title>Floor texture generator</title>
+    <title>Pixel art Floor texture generator</title>
     <link rel="stylesheet" href="./floor.css" />
 </head>
 
 <body>
-    <h1>Floor texture generator </h1>
+    <h1>Pixel art Floor texture generator</h1>
     <br />
 
     <div class="container row">
@@ -76,8 +76,17 @@
 
                     <div>
                         <div id="color-scheme">
-                            <label for="base-scheme-color">Color used for the palette</label>
-                            <input type="color" id="base-scheme-color" name="input-base-scheme-color" value="#96704A">
+                            <div>
+                                <label for="base-scheme-color">Color used for the palette</label>
+                                <input type="color" id="base-scheme-color" name="input-base-scheme-color"
+                                    value="#96704A">
+                            </div>
+                            <div>
+                                <label for="shading-perc">Shading percentage</label>
+                                <input type="number" name="input-shading-perc" id="shading-perc" value="-2" />
+                                <br />
+                                <span class="info"><b>x < 0 is darker & x > 0 is lighter</b></span>
+                            </div>
                         </div>
                         <div id="colors-details" hidden>
                             <div>

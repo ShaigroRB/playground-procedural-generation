@@ -8,6 +8,7 @@ let height = 32;
 let nbPlanks = 8;
 let spaceBetweenVertDelim = Math.floor(width / 6);
 
+let shadingPercentage = -2;
 let areColorsGenerated = true;
 
 // preview
@@ -393,12 +394,13 @@ function GetVariationsAttributes() {
 function GetColors() {
 
     if (areColorsGenerated) {
+        shadingPercentage = parseInt(document.getElementById("shading-perc").value);
         defaultBaseSchemeColor = document.getElementById("base-scheme-color").value;
 
         defaultPlankColor = defaultBaseSchemeColor;
-        darkerPlankColor = shadeColor(defaultPlankColor, -5);
-        delimPlankColor = shadeColor(darkerPlankColor, -10);
-        intersectionColor = shadeColor(delimPlankColor, -7);
+        darkerPlankColor = shadeColor(defaultPlankColor, shadingPercentage);
+        delimPlankColor = shadeColor(darkerPlankColor, shadingPercentage - 5);
+        intersectionColor = shadeColor(delimPlankColor, shadingPercentage - 2);
 
         return;
     }
