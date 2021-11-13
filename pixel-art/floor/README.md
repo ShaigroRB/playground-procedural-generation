@@ -1,6 +1,9 @@
 # Floor texture generator
 ![](imgs/screenshot.png)
 
+## Demo
+You can play with it **[➡️➡️ here ⬅️⬅️](https://codepen.io/Shaigro/full/dyzgNYZ)**.
+
 ## How?
 This generator is heavily inspired from the tutorial made by [@Sadface_RL](https://twitter.com/Sadface_RL):  
 ![](imgs/sadface_rl_floor_texture.gif)
