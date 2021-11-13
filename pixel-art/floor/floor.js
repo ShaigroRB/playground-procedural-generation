@@ -367,6 +367,20 @@ function Generate(seed) {
     Clear(previewStage);
     GeneratePreview(width, height, groups, previewStage, previewScale);
 }
+
+function GenerateFloor(seed = MakeID(10)) {
+    UpdateOptions();
+
+    Clear(stage);
+    Generate(seed);
+
+    document.getElementById("input-seed").value = seed;
+}
+
+function GenerateSameFloorNewOptions() {
+    const seed = GetSeed();
+    GenerateFloor(seed);
+}
 //#endregion
 
 //#region Get options values from the HTML
@@ -542,20 +556,6 @@ let previewStage = new Konva.Stage({
     width: width * previewScale,
     height: height * previewScale
 });
-
-function GenerateFloor(seed = MakeID(10)) {
-    UpdateOptions();
-
-    Clear(stage);
-    Generate(seed);
-
-    document.getElementById("input-seed").value = seed;
-}
-
-function GenerateSameFloorNewOptions() {
-    const seed = GetSeed();
-    GenerateFloor(seed);
-}
 
 // Very first generation
 GenerateFloor();
