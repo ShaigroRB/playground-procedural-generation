@@ -474,6 +474,17 @@ document.getElementById("automatic-definition").addEventListener('click', () => 
     colorSchemeDiv.hidden = false;
     colorsDetailsDiv.hidden = true;
 })
+document.addEventListener('keypress', (e) => {
+    switch (e.code) {
+        case 'Enter':
+        case 'BracketLeft':
+            GenerateSameFloorNewOptions();
+            break;
+        case 'BracketRight':
+            GenerateFloor();
+            break;
+    }
+})
 //#endregion
 
 //#region First generation, set things for Konva.js & global functions to generate
