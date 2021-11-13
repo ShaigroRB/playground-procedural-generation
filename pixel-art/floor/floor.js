@@ -1,7 +1,10 @@
 // ------- Define stuff
 
+// Img sizes
 let width = 32;
 let height = 32;
+
+// plank
 let nbPlanks = 8;
 let spaceBetweenVertDelim = Math.floor(width / 6);
 
@@ -92,7 +95,6 @@ function shadeColor(color, percent) {
 
     return "#" + RR + GG + BB;
 }
-
 //#endregion
 
 //#region Draw figures on canvas
@@ -367,6 +369,10 @@ function Generate(seed) {
 //#endregion
 
 //#region Get options values from the HTML
+function GetSeed() {
+    return document.getElementById("input-seed").value;
+}
+
 function GetCanvasAttributes() {
     width = parseInt(document.getElementById("canvas-width").value);
     const divisor = parseInt(document.getElementById("space-between-delim").value);
@@ -460,6 +466,41 @@ function UpdateOptions() {
 }
 //#endregion
 
+//#region Download images
+// function from https://stackoverflow.com/a/15832662/512042
+function downloadURI(uri, name) {
+    var link = document.createElement('a');
+    link.download = name;
+    link.href = uri;
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    delete link;
+}
+
+function DownloadResult() {
+    const seed = GetSeed();
+    const dataUrl = stage.toDataURL();
+    downloadURI(dataUrl, `result-${seed}.png`);
+}
+
+function DownloadVariations() {
+    const seed = GetSeed();
+    let i = 0;
+    for (let stage of variationsStages) {
+        const dataUrl = stage.toDataURL();
+        downloadURI(dataUrl, `variation-${i}-${seed}.png`);
+        i++;
+    }
+}
+
+function DownloadPreview() {
+    const seed = GetSeed();
+    const dataUrl = previewStage.toDataURL();
+    downloadURI(dataUrl, `preview-${seed}.png`);
+}
+//#endregion
+
 //#region Event listeners
 const colorSchemeDiv = document.getElementById("color-scheme");
 const colorsDetailsDiv = document.getElementById("colors-details");
@@ -510,7 +551,7 @@ function GenerateFloor(seed = MakeID(10)) {
 }
 
 function GenerateSameFloorNewOptions() {
-    const seed = document.getElementById("input-seed").value;
+    const seed = GetSeed();
     GenerateFloor(seed);
 }
 

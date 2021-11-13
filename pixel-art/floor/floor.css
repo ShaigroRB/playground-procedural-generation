@@ -59,3 +59,13 @@ h3 {
 .container.column {
     flex-direction: column;
 }
+
+.title-with-icon {
+    display: flex;
+}
+
+.title-with-icon img {
+    margin-top: 14px;
+    margin-left: 5px;
+    cursor: pointer;
+}

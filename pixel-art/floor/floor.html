@@ -24,7 +24,8 @@
             <!-- Generate seed -->
             <div>
                 <h3>--- Seed ---</h3>
-                <p>Shortcuts: <b>'['</b> or <b>'Enter'</b> to Apply the options & <b>']'</b> to generate with a new seed.</p>
+                <p>Shortcuts: <b>'['</b> or <b>'Enter'</b> to Apply the options & <b>']'</b> to generate with a new
+                    seed.</p>
                 <input id="input-seed" value="test" />
                 <button onclick="GenerateSameFloorNewOptions()">Apply Options</button>
                 <button onclick="GenerateFloor()">New Seed</button>
@@ -47,7 +48,7 @@
                     <span class="info">Tip for neat results: <b>height/nbPlanks == 0</b>.</span>
                 </div>
                 <div>
-                    <label for="space-between-delim">Space between vertical delimitations is 
+                    <label for="space-between-delim">Space between vertical delimitations is
                         <span class="info"><b>width / </b></span>
                     </label>
                     <input type="number" name="input-space-between-delim" id="space-between-delim" value="6" />
@@ -114,16 +115,25 @@
         <div class="container column left-border">
 
             <div id="variations">
-                <h2>Result</h2>
+                <div class="title-with-icon">
+                    <h2>Result</h2>
+                    <img src="./imgs/download.svg" height="37" onclick="DownloadResult()" />
+                </div>
                 <div id="floor-generation"></div>
-                <h3>Variations</h3>
+                <div class="title-with-icon">
+                    <h3>Variations</h3>
+                    <img src="./imgs/download.svg" height="30" onclick="DownloadVariations()" />
+                </div>
                 <div id="floor-variations" class="container row"></div>
             </div>
 
             <div class="horiz-separator"></div>
 
             <div id="preview">
-                <h2>Preview</h2>
+                <div class="title-with-icon">
+                    <h2>Preview</h2>
+                    <img src="./imgs/download.svg" height="37" onclick="DownloadPreview()" />
+                </div>
                 <div id="floor-preview"></div>
             </div>
         </div>
