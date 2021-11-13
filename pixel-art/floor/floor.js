@@ -1,7 +1,9 @@
 // ------- Define stuff
+
 let width = 32;
 let height = 32;
 let nbPlanks = 8;
+let spaceBetweenVertDelim = Math.floor(width / 6);
 
 let areColorsGenerated = true;
 
@@ -160,9 +162,38 @@ function DrawHorizDelim(height, width, distance, drawLine) {
 function DrawVertDelim(height, width, distance, nextNumber, drawLine) {
     let indexHeight = 0;
     let intersections = [];
+    let previousX = -50;
+
+    // Getting two delimitations that are really close to each other is ugly
+    // So, an adjustment is needed.
+    const adjustX = (x) => {
+        const diff = Math.abs(previousX - x);
+        let correctedX = x;
+
+        // Adjust the space with the previous delimitation
+        if (diff <= spaceBetweenVertDelim) {
+            correctedX = x < previousX ? previousX - spaceBetweenVertDelim : previousX + spaceBetweenVertDelim;
+        }
+        if (diff == 0) {
+            const isLeft = Math.floor(2 * nextNumber()) === 1;
+            correctedX = isLeft ? previousX - spaceBetweenVertDelim : previousX + spaceBetweenVertDelim;
+        }
+
+        return correctedX;
+    }
+
+    const getRandomX = () => {
+        const max = width - 1 - spaceBetweenVertDelim;
+        const min = spaceBetweenVertDelim;
+        return Math.floor(nextNumber() * (max - min + 1) + min);
+    }
 
     while (indexHeight < height) {
-        let x = Math.floor(width * nextNumber());
+        let x = getRandomX();
+
+        // Adjust the X if needed
+        x = adjustX(x);
+        previousX = x;
 
         // anti-aliasing fix
         x += 0.5;
@@ -306,7 +337,7 @@ function Generate(seed) {
 
         // Create intersections
         DrawIntersections(intersections, genRnd, drawKonvaLetterT);
-    
+
         // Draw all groups onto the stage
         const group = StackGroups([plankGroup, delimGroup, intersectGroup]);
         DrawGroupOntoStage(group, stage);
@@ -329,7 +360,7 @@ function Generate(seed) {
         tmpGroup = drawDelimAndIntersections(variationStage);
         groups.push(tmpGroup);
     }
-    
+
     Clear(previewStage);
     GeneratePreview(width, height, groups, previewStage, previewScale);
 }
@@ -338,6 +369,9 @@ function Generate(seed) {
 //#region Get options values from the HTML
 function GetCanvasAttributes() {
     width = parseInt(document.getElementById("canvas-width").value);
+    const divisor = parseInt(document.getElementById("space-between-delim").value);
+    spaceBetweenVertDelim = Math.floor(width / divisor);
+
     height = parseInt(document.getElementById("canvas-height").value);
 }
 

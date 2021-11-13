@@ -41,9 +41,15 @@
             <div>
                 <h3>--- Planks ---</h3>
                 <div>
-                    <label for="nb-planks">Number of planks</label> <input type="number" name="input-nb-planks"
-                        id="nb-planks" value="8" />
+                    <label for="nb-planks">Number of planks</label>
+                    <input type="number" name="input-nb-planks" id="nb-planks" value="8" />
                     <span class="info">Tip for neat results: <b>height/nbPlanks == 0</b>.</span>
+                </div>
+                <div>
+                    <label for="space-between-delim">Space between vertical delimitations is 
+                        <span class="info"><b>width / </b></span>
+                    </label>
+                    <input type="number" name="input-space-between-delim" id="space-between-delim" value="6" />
                 </div>
             </div>
 
@@ -68,21 +74,24 @@
 
                     <div>
                         <div id="color-scheme">
-                            <label for="base-scheme-color">Color used for the palette</label> <input type="color"
-                                id="base-scheme-color" name="input-base-scheme-color" value="#96704A">
+                            <label for="base-scheme-color">Color used for the palette</label>
+                            <input type="color" id="base-scheme-color" name="input-base-scheme-color" value="#96704A">
                         </div>
                         <div id="colors-details" hidden>
                             <div>
-                                <label for="light-plank-color">Light planks</label> <input type="color"
-                                    id="light-plank-color" name="input-light-plank-color" value="#96704A">
-                                <label for="dark-plank-color">Dark planks</label> <input type="color"
-                                    id="dark-plank-color" name="input-dark-plank-color" value="#916B44">
+                                <label for="light-plank-color">Light planks</label>
+                                <input type="color" id="light-plank-color" name="input-light-plank-color"
+                                    value="#96704A">
+                                <label for="dark-plank-color">Dark planks</label>
+                                <input type="color" id="dark-plank-color" name="input-dark-plank-color" value="#916B44">
                             </div>
                             <div>
-                                <label for="delimitation-color">Plank delimitations</label> <input type="color"
-                                    id="delimitation-color" name="input-delimitation-color" value="#815D34">
-                                <label for="intersection-color">Intersections</label> <input type="color"
-                                    id="intersection-color" name="input-intersection-color" value="#73532E">
+                                <label for="delimitation-color">Plank delimitations</label>
+                                <input type="color" id="delimitation-color" name="input-delimitation-color"
+                                    value="#815D34">
+                                <label for="intersection-color">Intersections</label>
+                                <input type="color" id="intersection-color" name="input-intersection-color"
+                                    value="#73532E">
                             </div>
                         </div>
                     </div>
@@ -93,8 +102,8 @@
             <div>
                 <h3>--- Variations ---</h3>
                 <div>
-                    <label for="nb-variations">Number of variations</label> <input type="number" name="input-nb-variations"
-                        id="nb-variations" value="3" min="0" max="10"/>
+                    <label for="nb-variations">Number of variations</label>
+                    <input type="number" name="input-nb-variations" id="nb-variations" value="3" min="0" max="10" />
                 </div>
             </div>
         </div>
