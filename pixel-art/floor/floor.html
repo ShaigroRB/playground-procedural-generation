@@ -30,18 +30,18 @@
                 <button onclick="GenerateSameFloorNewOptions()">Apply Options</button>
                 <button onclick="GenerateFloor()">New Seed</button>
             </div>
-            <!-- Size of the canvas -->
+            <!-- Size of the tile -->
             <div>
-                <h3>--- Canvas ---</h3>
+                <h3>--- Tile ---</h3>
                 <label for="canvas-width">Width</label> <input type="number" name="input-canvas-width" id="canvas-width"
                     value="32" />
                 <label for="canvas-height">Height</label> <input type="number" name="input-canvas-height"
                     id="canvas-height" value="32" />
             </div>
 
-            <!-- Planks options -->
+            <!-- Floor texture options -->
             <div>
-                <h3>--- Planks ---</h3>
+                <h3>--- Floor ---</h3>
                 <div>
                     <label for="nb-planks">Number of planks</label>
                     <input type="number" name="input-nb-planks" id="nb-planks" value="8" />
@@ -52,6 +52,16 @@
                         <span class="info"><b>width / </b></span>
                     </label>
                     <input type="number" name="input-space-between-delim" id="space-between-delim" value="6" />
+                </div>
+                <div>
+                    <input type="checkbox" name="checkbox-enable-intersections-generation" id="enable-intersections-generation" checked />
+                    <label for="enable-intersections-generation">Draw intersections</label>
+                </div>
+                <div>
+                    <label for="distance-connection-intersections">Maximum distance for connected intersections is 
+                        <span class="info"><b>width / </b></span>
+                    </label>
+                    <input type="number" name="input-distance-connection-intersections" id="distance-connection-intersections" value="6" />
                 </div>
             </div>
 

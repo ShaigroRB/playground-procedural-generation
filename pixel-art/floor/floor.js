@@ -7,6 +7,8 @@ let height = 32;
 // plank
 let nbPlanks = 8;
 let spaceBetweenVertOutlines = Math.floor(width / 6);
+let areIntersectionsEnabled = true;
+let distanceConnectionIntersections = width / 6;
 
 let shadingPercentage = -2;
 let areColorsGenerated = true;
@@ -320,6 +322,8 @@ function setHorizontalSpreading(
 }
 
 function DrawIntersections(
+    areIntersectionsEnabled,
+    distanceConnectionIntersections,
     distanceBetweenOutlines, distanceBetweenPlanks,
     intersections,
     nextNumber, drawLetterT) {
@@ -348,15 +352,22 @@ function DrawIntersections(
         // Horizontal spread
         const { left, right } = setHorizontalSpreading(
             center, previous,
-            distanceBetweenOutlines, nextNumber,
+            distanceConnectionIntersections, nextNumber,
             minHorizSpread, maxHorizSpread
         );
 
-        // Draw the "T" that will "darken" the intersection.
-        drawLetterT(left, right, center, bottom);
-
         // Update previous intersection.
         previous = center;
+
+        // Only done here to keep the same generation for vertical outlines
+        // whether intersections are enabled or not.
+        // TODO: Think of something a bit more clean & efficient. 
+        if (!areIntersectionsEnabled) {
+            return;
+        }
+
+        // Draw the "T" that will "darken" the intersection.
+        drawLetterT(left, right, center, bottom);
     });
 }
 
@@ -435,6 +446,8 @@ function Generate(seed) {
 
         // Add intersections to non-reusables group.
         DrawIntersections(
+            areIntersectionsEnabled,
+            distanceConnectionIntersections,
             spaceBetweenVertOutlines, distanceBetweenPlanks,
             intersections,
             genRnd, drawKonvaLetterT
@@ -489,14 +502,19 @@ function GetSeed() {
 
 function GetCanvasAttributes() {
     width = parseInt(document.getElementById("canvas-width").value);
-    const divisor = parseInt(document.getElementById("space-between-delim").value);
-    spaceBetweenVertOutlines = Math.floor(width / divisor);
-
     height = parseInt(document.getElementById("canvas-height").value);
 }
 
 function GetPlankAttributes() {
+    // planks
     nbPlanks = parseInt(document.getElementById("nb-planks").value);
+    // outlines
+    const divisorOutlines = parseInt(document.getElementById("space-between-delim").value);
+    spaceBetweenVertOutlines = Math.floor(width / divisorOutlines);
+    // intersections
+    areIntersectionsEnabled = document.getElementById("enable-intersections-generation").checked;
+    const divisorCombination = parseInt(document.getElementById("distance-connection-intersections").value);
+    distanceConnectionIntersections = Math.floor(width / divisorCombination);
 }
 
 function GetVariationsAttributes() {
