@@ -40,6 +40,11 @@ You can also use shortcuts:
 2. Change the space between vertical delimitations.  
    This is computed using the canvas width.  
    I advise to stay between **4** and **8**. Otherwise, you will either end up with the same results, either bad looking results *most of the time*.
+3. Enable/disable intersections drawing.  
+   Sometimes you get really interesting variations but the intersections are no good.
+4. Change the maximum distance for connected intersections.  
+   This is computed using the canvas width.  
+   This determines whether intersections on the same row should be connected or not.
 
 ### Colors
 You can either define the colors used manually or automatically.
